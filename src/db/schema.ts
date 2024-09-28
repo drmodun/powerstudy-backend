@@ -12,6 +12,10 @@ export const subjects = pgEnum('subjects', [
   'science',
   'history',
   'language',
+  'literature',
+  'art',
+  'biology',
+  'chemistry',
 ]);
 
 export const levelOfDetail = pgEnum('level_of_detail', [
@@ -51,6 +55,7 @@ export const users = pgTable('users', {
 export const knowledgeBase = pgTable('knowledge_base', {
   id: serial('id').primaryKey(),
   subject: subjects('subject').notNull(),
+  levelOfDetail: levelOfDetail('level_of_detail').notNull(),
   difficulty: difficulty('difficulty').notNull(),
   title: text('title').notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })

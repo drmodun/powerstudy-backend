@@ -3,7 +3,7 @@ import { IsOptional } from 'class-validator';
 
 export class UserResponse {
   @ApiResponseProperty()
-  id: string;
+  id: number;
 
   @ApiResponseProperty()
   email: string;

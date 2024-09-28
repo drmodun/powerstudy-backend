@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { BaseActionReturn } from 'src/base/baseActionReturn';
 import { NoValuesToSetException } from 'src/base/exceptions/custom/noValuesToSetException';
+import { UserResponse } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -15,18 +16,10 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
-    try {
-      createUserDto.password = await this.encryptPassword(
-        createUserDto.password,
-      );
-
-      return (await db
-        .insert(users)
-        .values(createUserDto)
-        .returning({ id: users.id })) satisfies BaseActionReturn[];
-    } catch (error) {
-      throw error;
-    }
+    return (await db
+      .insert(users)
+      .values(createUserDto)
+      .returning({ id: users.id })) satisfies BaseActionReturn[];
   }
 
   async findAll() {
@@ -38,7 +31,7 @@ export class UsersService {
         profilePicture: users.profilePicture,
       })
       .from(users)
-      .execute()) satisfies BaseActionReturn[];
+      .execute()) satisfies UserResponse[];
   }
 
   async findOne(id: number) {
@@ -51,7 +44,7 @@ export class UsersService {
       })
       .from(users)
       .where(eq(users.id, id))
-      .execute()) satisfies BaseActionReturn[];
+      .execute()) satisfies UserResponse[];
 
     if (items.length === 0) {
       throw new NotFoundException('User not found');
