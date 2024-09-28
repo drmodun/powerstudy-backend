@@ -52,7 +52,6 @@ export const knowledgeBase = pgTable('knowledge_base', {
   id: serial('id').primaryKey(),
   subject: subjects('subject').notNull(),
   difficulty: difficulty('difficulty').notNull(),
-  level_of_detail: levelOfDetail('level_of_detail').notNull(),
   title: text('title').notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()

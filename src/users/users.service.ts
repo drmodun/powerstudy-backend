@@ -3,16 +3,30 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { db } from 'src/db/db';
 import { users } from 'src/db/schema';
+import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
 import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { NoValuesToSetException } from 'src/base/exceptions/custom/noValuesToSetException';
 
 @Injectable()
 export class UsersService {
+  async encryptPassword(password: string) {
+    return await bcrypt.hash(password, 10);
+  }
+
   async create(createUserDto: CreateUserDto) {
-    return (await db
-      .insert(users)
-      .values(createUserDto)
-      .returning({ id: users.id })) satisfies BaseActionReturn[];
+    try {
+      createUserDto.password = await this.encryptPassword(
+        createUserDto.password,
+      );
+
+      return (await db
+        .insert(users)
+        .values(createUserDto)
+        .returning({ id: users.id })) satisfies BaseActionReturn[];
+    } catch (error) {
+      throw error;
+    }
   }
 
   async findAll() {
@@ -47,11 +61,17 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return (await db
-      .update(users)
-      .set(updateUserDto)
-      .where(eq(users.id, id))
-      .returning({ id: users.id })) satisfies BaseActionReturn[];
+    try {
+      return (await db
+        .update(users)
+        .set(updateUserDto)
+        .where(eq(users.id, id))
+        .returning({ id: users.id })) satisfies BaseActionReturn[];
+    } catch (error) {
+      if (error.message === 'No values to set') {
+        throw new NoValuesToSetException();
+      }
+    }
   }
 
   async remove(id: number) {

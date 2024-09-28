@@ -1,12 +1,7 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { TranslatedError } from './postgresExceptionFilter';
-
-export class NoValuesToSetException extends Error {
-  constructor() {
-    super('No values to set');
-  }
-}
-
+import { NoValuesToSetException } from './custom/noValuesToSetException';
+import { BaseExceptionFilter } from '@nestjs/core';
 @Catch(NoValuesToSetException)
 export class NoValuesToSetExceptionFilter implements ExceptionFilter {
   catch(exception: Error, host: ArgumentsHost) {
@@ -29,10 +24,7 @@ export class NoValuesToSetExceptionFilter implements ExceptionFilter {
           statusCode: 422,
         };
       default:
-        return {
-          message: 'Internal Server Error',
-          statusCode: 500,
-        };
+        return null;
     }
   }
 }

@@ -3,8 +3,8 @@ import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { env } from 'process';
-import { PostgresExceptionFilter } from './exceptions/postgresExceptionFilter';
-import { NoValuesToSetExceptionFilter } from './exceptions/noValuesToSetExceptionFilter';
+import { PostgresExceptionFilter } from './base/exceptions/postgresExceptionFilter';
+import { NoValuesToSetExceptionFilter } from './base/exceptions/noValuesToSetExceptionFilter';
 
 const setupSwagger = (app) => {
   const config = new DocumentBuilder()
@@ -17,7 +17,6 @@ const setupSwagger = (app) => {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
 };
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const { httpAdapter } = app.get(HttpAdapterHost);
@@ -31,7 +30,7 @@ async function bootstrap() {
   app.enableCors();
 
   if (env.NODE_ENV !== 'production') setupSwagger(app);
-
   await app.listen(env.PORT || 3000);
 }
+
 bootstrap();

@@ -9,8 +9,6 @@ export interface TranslatedError {
 @Catch(PostgresError)
 export class PostgresExceptionFilter implements ExceptionFilter {
   catch(exception: PostgresError, host: ArgumentsHost) {
-    console.log(exception);
-
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();

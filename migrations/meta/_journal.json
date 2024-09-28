@@ -8,6 +8,13 @@
       "when": 1727550817527,
       "tag": "0000_brainy_electro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727553638075,
+      "tag": "0001_sweet_randall",
+      "breakpoints": true
     }
   ]
 }
