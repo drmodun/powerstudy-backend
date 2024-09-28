@@ -1,4 +1,11 @@
-import { integer, pgEnum, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import {
+  integer,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from 'drizzle-orm/pg-core';
 
 export const subjects = pgEnum('subjects', [
   'math',
@@ -34,9 +41,11 @@ export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   email: text('email').unique().notNull(),
   name: text('name').notNull(),
+  profilePicture: text('profile_picture'),
   password: text('password').notNull(),
-  created_at: text('created_at').notNull(),
-  updated_at: text('updated_at').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const knowledgeBase = pgTable('knowledge_base', {
@@ -45,6 +54,9 @@ export const knowledgeBase = pgTable('knowledge_base', {
   difficulty: difficulty('difficulty').notNull(),
   level_of_detail: levelOfDetail('level_of_detail').notNull(),
   title: text('title').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
   userId: integer('user_id')
     .references(() => users.id)
     .notNull(),
@@ -54,6 +66,9 @@ export const notes = pgTable('notes', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
   content: text('content').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const mathProblems = pgTable('math_problem', {
@@ -61,6 +76,9 @@ export const mathProblems = pgTable('math_problem', {
   mathQuestion: text('question').notNull(),
   difficulty: difficulty('difficulty').notNull(),
   solution: text('answer').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
   userId: integer('user_id')
     .references(() => users.id)
     .notNull(),
@@ -70,6 +88,9 @@ export const questionAnswers = pgTable('question_answer', {
   id: serial('id').primaryKey(),
   question: text('question').notNull(),
   answer: text('answer').notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .defaultNow()
+    .$onUpdate(() => new Date()),
   userId: integer('user_id')
     .references(() => users.id)
     .notNull(),

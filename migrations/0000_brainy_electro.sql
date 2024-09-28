@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS "knowledge_base" (
 	"difficulty" "difficulty" NOT NULL,
 	"level_of_detail" "level_of_detail" NOT NULL,
 	"title" text NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now(),
 	"user_id" integer NOT NULL
 );
 --> statement-breakpoint
@@ -43,19 +44,22 @@ CREATE TABLE IF NOT EXISTS "math_problem" (
 	"question" text NOT NULL,
 	"difficulty" "difficulty" NOT NULL,
 	"answer" text NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now(),
 	"user_id" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "notes" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
-	"content" text NOT NULL
+	"content" text NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "question_answer" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"question" text NOT NULL,
 	"answer" text NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now(),
 	"user_id" integer NOT NULL
 );
 --> statement-breakpoint
@@ -64,8 +68,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"email" text NOT NULL,
 	"name" text NOT NULL,
 	"password" text NOT NULL,
-	"created_at" text NOT NULL,
-	"updated_at" text NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now(),
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
