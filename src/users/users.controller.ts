@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { UserResponse } from './entities/user.entity';
+import { BaseActionReturn } from 'src/base/baseActionReturn';
 
 @ApiTags('users')
 @Controller('users')
@@ -18,27 +23,33 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @ApiOkResponse({ type: BaseActionReturn })
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto)[0];
   }
 
   @Get()
+  @ApiOkResponse({ type: [UserResponse] })
   async findAll() {
-    return this.usersService.findAll();
+    return await this.usersService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: BaseActionReturn })
+  @ApiBearerAuth()
+  async update(@Body() updateUserDto: UpdateUserDto, @Req() { user }) {
+    return await this.usersService.update(user.id, updateUserDto)[0];
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiOkResponse({ type: BaseActionReturn })
+  async remove(@Req() { user }) {
+    return await this.usersService.remove(user.id)[0];
+  }
+
+  @Get(':id')
+  @ApiOkResponse({ type: UserResponse })
+  async findOne(@Param('id') id: string) {
+    return await this.usersService.findOne(+id)[0];
   }
 }

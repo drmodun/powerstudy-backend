@@ -4,5 +4,5 @@ import { Exclude } from 'class-transformer';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @Exclude()
-  password: string;
+  gmail: string;
 }
