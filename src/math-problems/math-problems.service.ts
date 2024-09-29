@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UpdateMathProblemDto } from './dto/update-math-problem.dto';
 import { GeminiService } from '../../src/gemini/gemini.service';
 import { WolframService } from '../../src/wolfram/wolfram.service';
-import db from '../../src/db';
+import { db } from '../../src/db/db';
 import { mathProblems } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
 import { ResponseSchema, SchemaType } from '@google/generative-ai';

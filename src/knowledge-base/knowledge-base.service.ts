@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import db from '../../src/db';
+import { db } from '../../src/db/db';
 import { and, eq, ilike } from 'drizzle-orm';
 import { BaseActionReturn } from '../../src/base/baseActionReturn';
 import { NoValuesToSetException } from '../../src/base/exceptions/custom/noValuesToSetException';
@@ -102,8 +102,6 @@ export class KnowledgeBasesService {
   }
 
   async remove(id: number) {
-    return (await db
-      .delete(knowledgeBase)
-      .where(eq(knowledgeBase.id, id))) satisfies BaseActionReturn[];
+    return await db.delete(knowledgeBase).where(eq(knowledgeBase.id, id));
   }
 }

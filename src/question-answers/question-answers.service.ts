@@ -6,7 +6,7 @@ import {
 import { ResponseSchema, SchemaType } from '@google/generative-ai';
 import { GeminiService } from '../../src/gemini/gemini.service';
 import { WolframService } from '../../src/wolfram/wolfram.service';
-import db from '../../src/db';
+import { db } from '../../src/db/db';
 import { questionAnswers } from '../../src/db/schema';
 import { QuestionAnswerResponse } from './entities/question-answer.entity';
 import { eq } from 'drizzle-orm';

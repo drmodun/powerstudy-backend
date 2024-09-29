@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import db from '../../src/db';
+import { db } from '../../src/db/db';
 import { users } from '../../src/db/schema';
 import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
@@ -75,9 +75,7 @@ export class UsersService {
   }
 
   async remove(id: number) {
-    return (await db
-      .delete(users)
-      .where(eq(users.id, id))) satisfies BaseActionReturn[];
+    return await db.delete(users).where(eq(users.id, id));
   }
 
   async userEditCheck(id: number, userId: number) {

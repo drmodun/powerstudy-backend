@@ -71,11 +71,8 @@ export class KnowledgeBasesController {
   @Delete(':baseId')
   @UseGuards(JwtAuthGuard, KnowledgeBaseOwnerGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: BaseActionReturn })
   async remove(@Param('baseId') id: string) {
-    const action = await this.knowledgeBaseService.remove(+id);
-
-    return action[0];
+    await this.knowledgeBaseService.remove(+id);
   }
 
   @Get(':baseId')
