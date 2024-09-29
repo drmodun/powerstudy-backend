@@ -74,9 +74,9 @@ export const knowledgeBase = pgTable('knowledge_base', {
 export const notes = pgTable('notes', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
-  knowledgeBaseId: integer('knowledge_base_id').references(
-    () => knowledgeBase.id,
-  ),
+  knowledgeBaseId: integer('knowledge_base_id')
+    .references(() => knowledgeBase.id)
+    .notNull(),
   content: text('content').notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()

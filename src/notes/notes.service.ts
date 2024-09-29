@@ -23,27 +23,24 @@ export class NotesService {
   ) {}
 
   getPrompt(options: PromptOptions) {
-    return `As a Gemini AI model, your task is to extract notes about ${options.title} from various study resources provided in the form of images. The extracted notes should be in the ${this.getLanguageString(options.language)} language. The level of detail in the notes should be ${this.getLevelOfDetailString(options.levelOfDetail)}. The difficulty level of the study material is ${this.getDifficultyString(options.difficulty || 'high')}. The subject of the study material is ${options.subject}.
+    return `As a Gemini AI model, your task is to extract notes about ${options.title} from various study resources provided in the form of images. The extracted notes should be in the ${options.language} language. The level of detail in the notes should be ${this.getLevelOfDetailString(options.levelOfDetail)}. The difficulty level of the study material is ${this.getDifficultyString(options.difficulty || 'high')}. The subject of the study material is ${options.subject}.
     For ${options?.subject}, focus on ${this.getSubjectString(options.subject)}. If some of these are not mentioned, do not add them.
     Remember to maintain a logical and coherent structure in the notes, starting from basic concepts and gradually moving to more complex topics. Use bullet points, headings, and subheadings to organize the notes and make them easy to read and understand.
     Also, output the notes in the markdown format for better readability.
     For information that is not provided in the study resources or unclear, you can try to infer it based on the context or leave it out.
     Please ensure the accuracy of the information in the notes, as they will be used for studying and revision purposes. Also, keep the language clear and concise, avoiding any unnecessary jargon or complex sentences.
+    Logically break notes into sections based on the topics covered in the study resources. Start each section with a heading that summarizes the main topic or concept being discussed.
     Finally, provide a summary at the end of each topic, highlighting the main points and key takeaways. This will help in quick revision and understanding of the topic`;
-  }
-
-  async getLanguageString(language: string) {
-    return ISO6391.getName(language || 'en') || 'English';
   }
 
   async getLevelOfDetailString(levelOfDetail: string) {
     switch (levelOfDetail) {
       case 'high':
-        return 'very comprehensive, covering all key points and concepts from the study resources';
+        return 'very comprehensive, covering all key points and concepts from the study resources, including examples and problem-solving methods if applicable';
       case 'medium':
-        return 'relatively detailed, including all relevant information from the study resources';
+        return 'very detailed, including all relevant information from the study resources, definitions and explanations';
       case 'low':
-        return 'concise, focusing on the most important points and concepts from the study resources';
+        return 'relatively detailed, including all relevant information from the study resources';
       default:
         return 'comprehensive, covering all key points and concepts from the study resources';
     }
@@ -94,16 +91,26 @@ export class NotesService {
   async create(createNoteDto: CreateNoteDto, baseId: number) {
     return await db
       .insert(notes)
-      .values(createNoteDto)
+      .values({ ...createNoteDto, knowledgeBaseId: baseId })
       .returning({ id: notes.id })
       .execute();
   }
 
-  async breakIntoNotes(generatedText: string) {
-    return generatedText.split('# ').map((note) => ({
+  breakIntoNotesFallback(generatedText: string) {
+    return generatedText.split('##/ ').map((note) => ({
       title: note.split('\n')[0],
       content: note,
     }));
+  }
+
+  parseNotes(generatedText: string) {
+    try {
+      const notes = JSON.parse(generatedText) as NoteResponse[];
+      return notes;
+    } catch (error) {
+      const notes = this.breakIntoNotesFallback(generatedText);
+      return notes;
+    }
   }
 
   async generate(createNoteDto: GenerateNotesDto[], baseId: number) {
@@ -148,9 +155,14 @@ export class NotesService {
   }
 
   async createBulkNotes(createNoteDto: CreateNoteDto[], baseId: number) {
+    const createdNotes = createNoteDto.map((note) => ({
+      ...note,
+      knowledgeBaseId: baseId,
+    }));
+
     return await db
       .insert(notes)
-      .values(createNoteDto)
+      .values(createdNotes)
       .returning({ id: notes.id })
       .execute();
   }
@@ -158,7 +170,8 @@ export class NotesService {
   async fullGenerate(createNoteDto: GenerateNotesDto[], baseId: number) {
     const { text, totalTokens } = await this.generate(createNoteDto, baseId);
     console.log(text, totalTokens);
-    const notes = await this.breakIntoNotes(text);
+    const notes = this.parseNotes(text);
+    console.log(notes.length, notes);
 
     const action = await this.createBulkNotes(notes, baseId);
     return action;

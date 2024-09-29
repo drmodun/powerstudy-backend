@@ -27,6 +27,11 @@ export class FullGenerateNotesDto {
   notes: GenerateNotesDto[];
 }
 
+export interface NotesResponseDto {
+  title: string;
+  content: string;
+}
+
 export interface PromptOptions {
   title: string;
   subject: string;
