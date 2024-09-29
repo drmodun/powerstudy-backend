@@ -53,7 +53,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @Delete(':id')
+  @Delete()
   @ApiOkResponse({ type: BaseActionReturn })
   async remove(@Req() { user }) {
     const action = await this.usersService.remove(user.id);

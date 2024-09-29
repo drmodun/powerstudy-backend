@@ -6,7 +6,6 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 import { env } from 'process';
-import { FileResult } from 'src/base/fileResults/fileResult.dto';
 
 @Injectable()
 export class BlobService {
@@ -29,17 +28,13 @@ export class BlobService {
         new Blob([image.buffer], { type: image.mimetype }),
       );
 
-      return this.httpService.axiosRef.post<any, AxiosResponse<UploadFileResponse>>(
+      return this.httpService.axiosRef.post<
+        any,
+        AxiosResponse<UploadFileResponse>
+      >(
         `https://generativelanguage.googleapis.com/upload/v1beta/files?uploadType=multipart&key=${fileManager.apiKey}`,
         formData,
       );
-      //   return fileManager.uploadFile(
-      //     new Uint8Array(image.buffer.buffer).buffer as unknown as string,
-      //     {
-      //       mimeType: image.mimetype,
-      //     },
-      //   );
-      // });
     });
 
     return Promise.all(promises);

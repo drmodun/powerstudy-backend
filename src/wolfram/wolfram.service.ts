@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { response } from 'express';
 import { env } from 'process';
 
 @Injectable()
@@ -35,23 +36,15 @@ export class WolframService {
   async attemptSolveQuestion(question: string) {
     try {
       const response = await this.httpService.axiosRef.get(
-        `http://api.wolframalpha.com/v2/query?appid=${env.WOLFRAM_APP_ID}&input=${question}&output=json`,
+        `http://www.wolframalpha.com/api/v1/llm-api?appid=${env.WOLFRAM_LLM_APP_ID}&input=${question}&output=json`,
       );
 
-      if (response.data.queryresult.error || !response.data.queryresult.success)
+      if (response.data?.queryresult?.error || !response.data)
         throw new Error('No solution found');
 
-      const pods = response.data.queryresult.pods;
-      const result = Array.from(pods).map((pod: any) => {
-        return {
-          title: pod.title || 'No title',
-          text: pod.plainText || 'No text',
-        };
-      });
-
-      return result;
+      return response?.data;
     } catch (error) {
-      console.error(error);
+      console.error(error, response.locals);
       return [];
     }
   }

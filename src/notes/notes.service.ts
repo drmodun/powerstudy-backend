@@ -6,7 +6,6 @@ import {
 } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { KnowledgeBasesService } from 'src/knowledge-base/knowledge-base.service';
-import ISO6391 from 'iso-639-1';
 import { GeminiService } from 'src/gemini/gemini.service';
 import { bookmarks, knowledgeBase, notes, users } from 'src/db/schema';
 import { QueryNoteDto } from './dto/query-note.dto';
