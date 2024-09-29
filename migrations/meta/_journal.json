@@ -15,6 +15,27 @@
       "when": 1727553638075,
       "tag": "0001_sweet_randall",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727566862903,
+      "tag": "0002_clumsy_ezekiel_stane",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727570447405,
+      "tag": "0003_lovely_scarecrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1727573681830,
+      "tag": "0004_steep_prism",
+      "breakpoints": true
     }
   ]
 }

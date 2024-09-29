@@ -5,5 +5,6 @@ import { KnowledgeBasesService } from './knowledge-base.service';
 @Module({
   controllers: [KnowledgeBasesController],
   providers: [KnowledgeBasesService],
+  exports: [KnowledgeBasesService],
 })
 export class KnowledgeBaseModule {}

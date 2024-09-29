@@ -13,7 +13,7 @@ export class KnowledgeBaseOwnerGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    const knowledgeBaseId = Number(request.params.id);
+    const knowledgeBaseId = Number(request.params.baseId);
 
     const isOwner = await this.knowledgeBasesService.checkBaseOwnership(
       knowledgeBaseId,

@@ -19,7 +19,11 @@ export type subjectEnumType =
   | 'literature'
   | 'art'
   | 'biology'
-  | 'chemistry';
+  | 'chemistry'
+  | 'geography'
+  | 'computer_science'
+  | 'physics'
+  | 'psychology';
 
 export class CreateKnowledgeBaseDto {
   @ApiProperty()
@@ -37,4 +41,8 @@ export class CreateKnowledgeBaseDto {
   @ApiProperty()
   @IsEnum(subjects.enumValues)
   subject: subjectEnumType;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  language?: string;
 }

@@ -8,7 +8,7 @@ import { and, eq, ilike } from 'drizzle-orm';
 import { BaseActionReturn } from 'src/base/baseActionReturn';
 import { NoValuesToSetException } from 'src/base/exceptions/custom/noValuesToSetException';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto';
-import { difficulty, knowledgeBase, levelOfDetail } from 'src/db/schema';
+import { knowledgeBase } from 'src/db/schema';
 import { KnowledgeBaseResponse } from './entities/knowledge-base.entity';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto';
 import { KnowledgeBaseQuery } from './dto/query-knowledge-base.dto';
@@ -72,6 +72,7 @@ export class KnowledgeBasesService {
         id: knowledgeBase.id,
         levelOfDetail: knowledgeBase.levelOfDetail,
         title: knowledgeBase.title,
+        language: knowledgeBase.language,
         difficulty: knowledgeBase.difficulty,
         subject: knowledgeBase.subject,
       })

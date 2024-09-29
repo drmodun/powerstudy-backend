@@ -51,6 +51,8 @@ export class UsersController {
     return action[0];
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOkResponse({ type: BaseActionReturn })
   async remove(@Req() { user }) {

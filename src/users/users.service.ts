@@ -57,7 +57,12 @@ export class UsersService {
     try {
       return (await db
         .update(users)
-        .set(updateUserDto)
+        .set({
+          ...updateUserDto,
+          ...(updateUserDto.password && {
+            password: await this.encryptPassword(updateUserDto.password),
+          }),
+        })
         .where(eq(users.id, id))
         .returning({ id: users.id })) satisfies BaseActionReturn[];
     } catch (error) {

@@ -52,13 +52,13 @@ export class KnowledgeBasesController {
     return await this.knowledgeBaseService.findAll(query);
   }
 
-  @Patch(':id')
+  @Patch(':baseId')
   @UseGuards(JwtAuthGuard, KnowledgeBaseOwnerGuard)
-  @ApiCreatedResponse({ type: BaseActionReturn })
+  @ApiOkResponse({ type: BaseActionReturn })
   @ApiBearerAuth()
   async update(
     @Body() updateKnowledgeBaseDto: UpdateKnowledgeBaseDto,
-    @Param('id') id: string,
+    @Param('baseId') id: string,
   ) {
     const action = await this.knowledgeBaseService.update(
       +id,
@@ -68,19 +68,19 @@ export class KnowledgeBasesController {
     return action[0];
   }
 
-  @Delete(':id')
+  @Delete(':baseId')
   @UseGuards(JwtAuthGuard, KnowledgeBaseOwnerGuard)
   @ApiBearerAuth()
   @ApiOkResponse({ type: BaseActionReturn })
-  async remove(@Param('id') id: string) {
+  async remove(@Param('baseId') id: string) {
     const action = await this.knowledgeBaseService.remove(+id);
 
     return action[0];
   }
 
-  @Get(':id')
+  @Get(':baseId')
   @ApiOkResponse({ type: KnowledgeBaseResponse })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('baseId') id: string) {
     const action = await this.knowledgeBaseService.findOne(+id);
 
     return action[0];

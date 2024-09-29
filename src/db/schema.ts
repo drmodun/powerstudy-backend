@@ -16,6 +16,10 @@ export const subjects = pgEnum('subjects', [
   'art',
   'biology',
   'chemistry',
+  'geography',
+  'computer_science',
+  'physics',
+  'psychology',
 ]);
 
 export const levelOfDetail = pgEnum('level_of_detail', [
@@ -58,6 +62,7 @@ export const knowledgeBase = pgTable('knowledge_base', {
   levelOfDetail: levelOfDetail('level_of_detail').notNull(),
   difficulty: difficulty('difficulty').notNull(),
   title: text('title').notNull(),
+  language: text('language').notNull().default('en'),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()
     .$onUpdate(() => new Date()),
@@ -69,6 +74,9 @@ export const knowledgeBase = pgTable('knowledge_base', {
 export const notes = pgTable('notes', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
+  knowledgeBaseId: integer('knowledge_base_id').references(
+    () => knowledgeBase.id,
+  ),
   content: text('content').notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()
