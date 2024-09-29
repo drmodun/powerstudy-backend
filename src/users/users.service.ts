@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { db } from 'src/db';
+import db from 'src/db';
 import { users } from 'src/db/schema';
 import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';

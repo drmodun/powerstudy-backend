@@ -3,7 +3,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { db } from 'src/db';
+import db from 'src/db';
 import { and, eq, ilike } from 'drizzle-orm';
 import { BaseActionReturn } from 'src/base/baseActionReturn';
 import { NoValuesToSetException } from 'src/base/exceptions/custom/noValuesToSetException';
