@@ -18,7 +18,10 @@ const setupSwagger = (app) => {
   SwaggerModule.setup('swagger', app, document);
 };
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+    bodyParser: true,
+  });
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
@@ -28,14 +31,8 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://powerstudy-demo.vercel.app',
-    ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    optionsSuccessStatus: 204,
-    preflightContinue: false,
+    origin: '*',
+    allowedHeaders: '*',
   });
 
   if (env.NODE_ENV !== 'production') setupSwagger(app);
