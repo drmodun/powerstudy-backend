@@ -27,7 +27,13 @@ async function bootstrap() {
     new NoValuesToSetExceptionFilter(),
   );
 
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    allowedHeaders: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
 
   if (env.NODE_ENV !== 'production') setupSwagger(app);
   await app.listen(env.PORT || 3000);
