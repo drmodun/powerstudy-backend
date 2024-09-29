@@ -7,9 +7,11 @@ import { KnowledgeBaseModule } from './knowledge-base/knowledge-base.module';
 import { GeminiModule } from './gemini/gemini.module';
 import { NotesModule } from './notes/notes.module';
 import { BlobModule } from './blob/blob.module';
+import { MathProblemsModule } from './math-problems/math-problems.module';
+import { WolframModule } from './wolfram/wolfram.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, KnowledgeBaseModule, GeminiModule, NotesModule, BlobModule],
+  imports: [UsersModule, AuthModule, KnowledgeBaseModule, GeminiModule, NotesModule, BlobModule, MathProblemsModule, WolframModule],
   controllers: [AppController],
   providers: [AppService],
 })

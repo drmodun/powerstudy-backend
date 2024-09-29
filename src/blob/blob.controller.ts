@@ -14,11 +14,13 @@ import {
   ApiBody,
   ApiConsumes,
   ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FileResult } from 'src/base/fileResults/fileResult.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
 
+@ApiTags('blob')
 @Controller('blob')
 export class BlobController {
   constructor(private readonly blobService: BlobService) {}

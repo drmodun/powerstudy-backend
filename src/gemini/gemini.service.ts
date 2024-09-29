@@ -15,6 +15,7 @@ import { FileInput } from 'src/base/fileResults/fileResult.dto';
 export class GeminiService {
   constructor(
     @Inject(MODELS.FLASH_MODEL) private readonly flashModel: GenerativeModel,
+    @Inject(MODELS.PRO_MODEL) private readonly proModel: GenerativeModel,
   ) {}
 
   async generateText(prompt: string): Promise<GenAiResponse> {
@@ -28,14 +29,25 @@ export class GeminiService {
     return { totalTokens, text };
   }
 
+  async generateTextPro(prompt: string): Promise<GenAiResponse> {
+    const contents = this.createContent(prompt);
+
+    const { totalTokens } = await this.proModel.countTokens({ contents });
+    const result = await this.proModel.generateContent({ contents });
+    const response = await result.response;
+    const text = response.text();
+
+    return { totalTokens, text };
+  }
+
   async visionGenerate(
     prompt: string,
     ...images: Express.Multer.File[]
   ): Promise<GenAiResponse> {
     const contents = this.createContent(prompt, ...images);
 
-    const { totalTokens } = await this.flashModel.countTokens({ contents });
-    const result = await this.flashModel.generateContent({ contents });
+    const { totalTokens } = await this.proModel.countTokens({ contents });
+    const result = await this.proModel.generateContent({ contents });
     const response = await result.response;
     const text = response.text();
 

@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
 import { GeminiService } from './gemini.service';
-import { GeminiFlashModuleProvider } from './gemini.provider';
+import {
+  GeminiFlashModuleProvider,
+  GeminiProModuleProvider,
+} from './gemini.provider';
 
 @Module({
-  providers: [GeminiService, GeminiFlashModuleProvider],
+  providers: [
+    GeminiService,
+    GeminiFlashModuleProvider,
+    GeminiProModuleProvider,
+  ],
   exports: [GeminiService],
 })
 export class GeminiModule {}
