@@ -56,7 +56,11 @@ export class MathProblemsService {
       return { action, result: await this.fallBackSolver(action) };
     }
 
-    return { action, result };
+    const explanationPrompt = `Explain the solution to the math problem in markdown format. The problem is ${action}, and the solution is represented by this object ${JSON.stringify(result)}. Try to explain it step by step, and be sure to output it in clean markdown format.`;
+    const { text: explanation } =
+      await this.geminiService.generateText(explanationPrompt);
+
+    return { action, explanation };
   }
 
   async findAll(userId?: number) {

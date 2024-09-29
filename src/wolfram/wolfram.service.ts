@@ -10,6 +10,9 @@ export class WolframService {
       const response = await this.httpService.axiosRef.get(
         `http://api.wolframalpha.com/v2/query?appid=${env.WOLFRAM_APP_ID}&input=${problem}&podstate=Step-by-step%20solution&output=json`,
       );
+
+      if (response.data.queryresult.error) throw new Error('No solution found');
+
       const pods = response.data.queryresult.pods;
       const result = Array.from(pods).map((pod: any) => {
         // Dont like using this but the wolfram lib doesnt have types
@@ -33,6 +36,9 @@ export class WolframService {
       const response = await this.httpService.axiosRef.get(
         `http://api.wolframalpha.com/v2/query?appid=${env.WOLFRAM_APP_ID}&input=${question}&output=json`,
       );
+
+      if (response.data.queryresult.error) throw new Error('No solution found');
+
       const pods = response.data.queryresult.pods;
       const result = Array.from(pods).map((pod: any) => {
         return {

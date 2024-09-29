@@ -16,6 +16,8 @@ export class UsersService {
   }
 
   async create(createUserDto: CreateUserDto) {
+    createUserDto.password = await this.encryptPassword(createUserDto.password);
+
     return (await db
       .insert(users)
       .values(createUserDto)
