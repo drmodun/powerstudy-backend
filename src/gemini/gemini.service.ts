@@ -15,7 +15,7 @@ import {
   UploadFileResponse,
 } from '@google/generative-ai/dist/server/server';
 import { env } from 'process';
-import { FileInput } from 'src/base/fileResults/fileResult.dto';
+import { FileInput } from '../../src/base/fileResults/fileResult.dto';
 
 @Injectable()
 export class GeminiService {

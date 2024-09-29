@@ -13,7 +13,7 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { MathProblemsService } from './math-problems.service';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -24,7 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MathProblemResponse } from './entities/math-problem.entity';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
 
 @ApiTags('math-problems')
 @Controller('math-problems')

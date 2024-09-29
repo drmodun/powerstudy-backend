@@ -10,14 +10,14 @@ import {
 } from '@nestjs/common';
 import { QuestionAnswersService } from './question-answers.service';
 import { CreateQuestionAnswerDto } from './dto/create-question-answer.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
 import { QuestionAnswerResponse } from './entities/question-answer.entity';
 
 @ApiTags('question-answers')

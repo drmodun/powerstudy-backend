@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { KnowledgeBasesService } from 'src/knowledge-base/knowledge-base.service';
+import { KnowledgeBasesService } from '../../src/knowledge-base/knowledge-base.service';
 
 @Injectable()
 export class KnowledgeBaseOwnerGuard implements CanActivate {

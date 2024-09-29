@@ -18,9 +18,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
 import { UserResponse } from './entities/user.entity';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
 
 @ApiTags('users')
 @Controller('users')

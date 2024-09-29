@@ -25,10 +25,10 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
-import { KnowledgeBaseOwnerGuard } from 'src/auth/knowledge-base-guard';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
+import { KnowledgeBaseOwnerGuard } from '../../src/auth/knowledge-base-guard';
 import { QueryNoteDto } from './dto/query-note.dto';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
 import { NoteResponse, NoteResponseExtended } from './entities/note.entity';
 
 @ApiTags('notes')

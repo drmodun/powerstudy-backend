@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../../src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
-import { KnowledgeBaseModule } from 'src/knowledge-base/knowledge-base.module';
+import { KnowledgeBaseModule } from '../../src/knowledge-base/knowledge-base.module';
 
 export const jwtSecret = env.JWT_SECRET;
 

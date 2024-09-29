@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
-import db from 'src/db';
-import { users } from 'src/db/schema';
+import db from '../../src/db';
+import { users } from '../../src/db/schema';
 
 @Injectable()
 export class AuthService {

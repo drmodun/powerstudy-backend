@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsString } from 'class-validator';
-import { difficulty, levelOfDetail, subjects } from 'src/db/schema';
+import { difficulty, levelOfDetail, subjects } from '../../../src/db/schema';
 
 export type difficultyEnumType =
   | 'elementary'

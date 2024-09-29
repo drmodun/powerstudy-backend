@@ -16,13 +16,13 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
 import { KnowledgeBasesService } from './knowledge-base.service';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto';
 import { KnowledgeBaseResponse } from './entities/knowledge-base.entity';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto';
-import { KnowledgeBaseOwnerGuard } from 'src/auth/knowledge-base-guard';
+import { KnowledgeBaseOwnerGuard } from '../../src/auth/knowledge-base-guard';
 import { KnowledgeBaseQuery } from './dto/query-knowledge-base.dto';
 
 @ApiTags('knowledge-bases')

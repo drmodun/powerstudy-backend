@@ -3,12 +3,12 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import db from 'src/db';
+import db from '../../src/db';
 import { and, eq, ilike } from 'drizzle-orm';
-import { BaseActionReturn } from 'src/base/baseActionReturn';
-import { NoValuesToSetException } from 'src/base/exceptions/custom/noValuesToSetException';
+import { BaseActionReturn } from '../../src/base/baseActionReturn';
+import { NoValuesToSetException } from '../../src/base/exceptions/custom/noValuesToSetException';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto';
-import { knowledgeBase } from 'src/db/schema';
+import { knowledgeBase } from '../../src/db/schema';
 import { KnowledgeBaseResponse } from './entities/knowledge-base.entity';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto';
 import { KnowledgeBaseQuery } from './dto/query-knowledge-base.dto';

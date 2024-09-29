@@ -17,8 +17,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { FileResult } from 'src/base/fileResults/fileResult.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
+import { FileResult } from '../../src/base/fileResults/fileResult.dto';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth-guard';
 
 @ApiTags('blob')
 @Controller('blob')
