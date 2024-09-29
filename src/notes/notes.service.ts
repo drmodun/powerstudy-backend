@@ -11,7 +11,7 @@ import { GeminiService } from 'src/gemini/gemini.service';
 import { bookmarks, knowledgeBase, notes, users } from 'src/db/schema';
 import { QueryNoteDto } from './dto/query-note.dto';
 import { and, ilike, eq, count } from 'drizzle-orm';
-import { db } from 'src/db/db';
+import { db } from 'src/db';
 import { NoteResponse, NoteResponseExtended } from './entities/note.entity';
 
 @Injectable()
