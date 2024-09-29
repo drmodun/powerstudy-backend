@@ -64,7 +64,7 @@ export class PostgresExceptionFilter implements ExceptionFilter {
 
       default:
         return {
-          message: 'Internal Server Error',
+          message: 'Internal Server Error, called by Postgres: status ' + code,
           statusCode: 500,
         };
     }

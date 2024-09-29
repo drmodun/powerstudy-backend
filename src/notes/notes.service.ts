@@ -213,7 +213,7 @@ export class NotesService {
   }
 
   async findOne(id: number) {
-    return (await db
+    const note = (await db
       .select({
         id: notes.id,
         title: notes.title,
@@ -229,9 +229,11 @@ export class NotesService {
       .from(notes)
       .leftJoin(bookmarks, eq(notes.id, bookmarks.itemId))
       .leftJoin(knowledgeBase, eq(notes.knowledgeBaseId, knowledgeBase.id))
-      .leftJoin(bookmarks, eq(notes.id, bookmarks.itemId))
-      .where(eq(notes.id, id))
-      .groupBy(notes.id)) satisfies NoteResponseExtended[];
+      .leftJoin(users, eq(knowledgeBase.userId, users.id))
+      .groupBy(notes.id, knowledgeBase.id, users.id)
+      .where(eq(notes.id, id))) satisfies NoteResponseExtended[];
+
+    return note;
   }
 
   async update(id: number, updateNoteDto: UpdateNoteDto) {
