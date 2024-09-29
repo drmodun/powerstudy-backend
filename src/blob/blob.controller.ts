@@ -58,9 +58,10 @@ export class BlobController {
     files: Array<Express.Multer.File>,
   ) {
     return (await this.blobService.uploadFiles(files)).map((result) => {
+      console.log(result);
       return {
-        fileUri: result.file.uri,
-        mimeType: result.file.mimeType,
+        fileUri: result.data.file.uri,
+        mimeType: result.data.file.mimeType,
       };
     });
   }
@@ -99,8 +100,8 @@ export class BlobController {
   ) {
     return (await this.blobService.uploadFiles(files)).map((result) => {
       return {
-        fileUri: result.file.uri,
-        mimeType: result.file.mimeType,
+        fileUri: result.data.file.uri,
+        mimeType: result.data.file.mimeType,
       };
     });
   }
@@ -138,9 +139,10 @@ export class BlobController {
     files: Array<Express.Multer.File>,
   ) {
     return (await this.blobService.uploadFiles(files)).map((result) => {
+      console.log(result);
       return {
-        fileUri: result.file.uri,
-        mimeType: result.file.mimeType,
+        fileUri: result.data.file.uri,
+        mimeType: result.data.file.mimeType,
       };
     });
   }

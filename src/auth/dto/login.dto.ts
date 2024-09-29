@@ -12,3 +12,16 @@ export class LoginDto {
   @ApiProperty()
   password: string;
 }
+
+export class LoginResponseDto {
+  @ApiProperty()
+  accessToken: string;
+}
+
+export class LoginInfo {
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  id: string;
+}

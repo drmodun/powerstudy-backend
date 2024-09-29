@@ -10,7 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import { CreateNoteDto, GenerateNotesDto } from './dto/create-note.dto';
+import {
+  CreateNoteDto,
+  FullGenerateNotesDto,
+  GenerateNotesDto,
+} from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
@@ -37,10 +41,10 @@ export class NotesController {
   @Post(':baseId')
   @ApiCreatedResponse({ type: BaseActionReturn })
   async generate(
-    @Body() generateNotesDto: GenerateNotesDto[],
+    @Body() generateNotesDto: FullGenerateNotesDto,
     @Param('baseId') baseId: string,
   ) {
-    return this.notesService.fullGenerate(generateNotesDto, +baseId);
+    return this.notesService.fullGenerate(generateNotesDto.notes, +baseId);
   }
 
   @Get()

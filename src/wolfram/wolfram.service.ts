@@ -11,7 +11,8 @@ export class WolframService {
         `http://api.wolframalpha.com/v2/query?appid=${env.WOLFRAM_APP_ID}&input=${problem}&podstate=Step-by-step%20solution&output=json`,
       );
 
-      if (response.data.queryresult.error) throw new Error('No solution found');
+      if (response.data.queryresult.error || !response.data.queryresult.success)
+        throw new Error('No solution found');
 
       const pods = response.data.queryresult.pods;
       const result = Array.from(pods).map((pod: any) => {
@@ -37,7 +38,8 @@ export class WolframService {
         `http://api.wolframalpha.com/v2/query?appid=${env.WOLFRAM_APP_ID}&input=${question}&output=json`,
       );
 
-      if (response.data.queryresult.error) throw new Error('No solution found');
+      if (response.data.queryresult.error || !response.data.queryresult.success)
+        throw new Error('No solution found');
 
       const pods = response.data.queryresult.pods;
       const result = Array.from(pods).map((pod: any) => {

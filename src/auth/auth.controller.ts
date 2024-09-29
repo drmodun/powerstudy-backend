@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth-guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { LoginDto } from './dto/login.dto';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { LoginDto, LoginResponseDto } from './dto/login.dto';
 
 import { UsersService } from '../../src/users/users.service';
 
@@ -16,6 +16,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
+  @ApiCreatedResponse({ type: LoginResponseDto })
   async login(@Body() login: LoginDto) {
     const accessToken = await this.authService.userPasswordLogin(
       login.email,
@@ -29,6 +30,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
+  @ApiOkResponse({ type: LoginResponseDto })
   @Get('me')
   async whoami(@Req() { user }) {
     return user;

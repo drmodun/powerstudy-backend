@@ -1,4 +1,10 @@
-import { Content, GenerativeModel, Part } from '@google/generative-ai';
+import {
+  Content,
+  GenerationConfig,
+  GenerativeModel,
+  Part,
+  ResponseSchema,
+} from '@google/generative-ai';
 import { Inject, Injectable } from '@nestjs/common';
 import { MODELS } from './gemini.config';
 import { GenAiResponse } from './dto/interfaces';
@@ -18,22 +24,48 @@ export class GeminiService {
     @Inject(MODELS.PRO_MODEL) private readonly proModel: GenerativeModel,
   ) {}
 
-  async generateText(prompt: string): Promise<GenAiResponse> {
+  async generateText(
+    prompt: string,
+    schema?: ResponseSchema,
+  ): Promise<GenAiResponse> {
     const contents = this.createContent(prompt);
 
     const { totalTokens } = await this.flashModel.countTokens({ contents });
-    const result = await this.flashModel.generateContent({ contents });
+
+    const result = await this.flashModel.generateContent({
+      contents,
+      ...(schema && {
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: schema,
+        },
+      }),
+    });
+
     const response = await result.response;
     const text = response.text();
 
     return { totalTokens, text };
   }
 
-  async generateTextPro(prompt: string): Promise<GenAiResponse> {
+  async generateTextPro(
+    prompt: string,
+    schema?: ResponseSchema,
+  ): Promise<GenAiResponse> {
     const contents = this.createContent(prompt);
 
     const { totalTokens } = await this.proModel.countTokens({ contents });
-    const result = await this.proModel.generateContent({ contents });
+
+    const result = await this.proModel.generateContent({
+      contents,
+      ...(schema && {
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: schema,
+        },
+      }),
+    });
+
     const response = await result.response;
     const text = response.text();
 
@@ -42,12 +74,23 @@ export class GeminiService {
 
   async visionGenerate(
     prompt: string,
-    ...images: Express.Multer.File[]
+    image: Express.Multer.File,
+    schema?: ResponseSchema,
   ): Promise<GenAiResponse> {
-    const contents = this.createContent(prompt, ...images);
+    const contents = this.createContent(prompt, image);
 
     const { totalTokens } = await this.proModel.countTokens({ contents });
-    const result = await this.proModel.generateContent({ contents });
+
+    const result = await this.proModel.generateContent({
+      contents,
+      ...(schema && {
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: schema,
+        },
+      }), // TODO: refactor this to be more readable
+    });
+
     const response = await result.response;
     const text = response.text();
 
@@ -57,11 +100,21 @@ export class GeminiService {
   async visionGenerateWithUploads(
     prompt: string,
     files: FileInput[],
+    schema?: ResponseSchema,
   ): Promise<GenAiResponse> {
     const contents = this.createContentWithUploads(prompt, files);
 
     const { totalTokens } = await this.flashModel.countTokens({ contents });
-    const result = await this.flashModel.generateContent({ contents });
+
+    const result = await this.flashModel.generateContent({
+      contents,
+      ...(schema && {
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: schema,
+        },
+      }),
+    });
     const response = await result.response;
     const text = response.text();
 

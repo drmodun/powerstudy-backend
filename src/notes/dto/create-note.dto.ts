@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMimeType, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsArray, IsMimeType, IsString } from 'class-validator';
 
 export class CreateNoteDto {
   @ApiProperty()
@@ -17,6 +18,13 @@ export class GenerateNotesDto {
   @ApiProperty()
   @IsMimeType()
   mimeType: string;
+}
+
+export class FullGenerateNotesDto {
+  @ApiProperty({ isArray: true, type: GenerateNotesDto })
+  @IsArray()
+  @Type(() => GenerateNotesDto)
+  notes: GenerateNotesDto[];
 }
 
 export interface PromptOptions {

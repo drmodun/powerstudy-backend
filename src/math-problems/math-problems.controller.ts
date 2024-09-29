@@ -2,16 +2,15 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Delete,
   UseGuards,
-  UploadedFiles,
   ParseFilePipe,
   FileTypeValidator,
   MaxFileSizeValidator,
   UseInterceptors,
   Req,
+  UploadedFile,
 } from '@nestjs/common';
 import { MathProblemsService } from './math-problems.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth-guard';
@@ -32,26 +31,26 @@ import { BaseActionReturn } from 'src/base/baseActionReturn';
 export class MathProblemsController {
   constructor(private readonly mathProblemsService: MathProblemsService) {}
 
-  @Post(':id')
-  @ApiConsumes('multipart/form-data')
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @ApiCreatedResponse({ type: BaseActionReturn })
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
   @ApiBody({
-    required: true,
     schema: {
       type: 'object',
       properties: {
         file: {
-          items: {
-            type: 'string',
-            format: 'binary',
-          },
+          type: 'string',
+          format: 'binary',
         },
       },
     },
   })
+  @UseInterceptors(FileInterceptor('file'))
   async uploadImage(
-    @UploadedFiles(
+    @Req() { user },
+    @UploadedFile(
       new ParseFilePipe({
         validators: [
           new FileTypeValidator({ fileType: 'image/*' }),
@@ -60,10 +59,8 @@ export class MathProblemsController {
       }),
     )
     file: Express.Multer.File,
-    @Param('id')
-    id: string,
   ) {
-    const action = await this.mathProblemsService.create(file, +id);
+    const action = await this.mathProblemsService.create(file, user.id);
 
     return action[0];
   }

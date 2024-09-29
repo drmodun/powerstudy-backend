@@ -13,6 +13,7 @@ import { QueryNoteDto } from './dto/query-note.dto';
 import { and, ilike, eq, count } from 'drizzle-orm';
 import db from 'src/db';
 import { NoteResponse, NoteResponseExtended } from './entities/note.entity';
+import { SchemaType } from '@google/generative-ai';
 
 @Injectable()
 export class NotesService {
@@ -116,9 +117,31 @@ export class NotesService {
       ...knowledgeBase,
     });
 
+    const schema = {
+      description: 'List of notes',
+      type: SchemaType.ARRAY,
+      items: {
+        type: SchemaType.OBJECT,
+        properties: {
+          title: {
+            type: SchemaType.STRING,
+            description: 'Title of the note (in markdown format)',
+            nullable: false,
+          },
+          content: {
+            type: SchemaType.STRING,
+            description: 'Content of the note (in markdown format)',
+            nullable: false,
+          },
+        },
+        required: ['title', 'content'],
+      },
+    };
+
     const generation = await this.geminiService.visionGenerateWithUploads(
       prompt,
       createNoteDto,
+      schema,
     );
 
     return generation;
