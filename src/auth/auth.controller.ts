@@ -2,10 +2,16 @@ import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth-guard';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 
 import { UsersService } from '../../src/users/users.service';
+import { UserResponse } from 'src/users/entities/user.entity';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -30,9 +36,11 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOkResponse({ type: LoginResponseDto })
+  @ApiOkResponse({ type: UserResponse })
   @Get('me')
   async whoami(@Req() { user }) {
-    return user;
+    const userInfo = await this.usersService.findOne(user.id);
+
+    return userInfo[0];
   }
 }

@@ -5,7 +5,6 @@ import { WolframService } from '../../src/wolfram/wolfram.service';
 import { db } from '../../src/db/db';
 import { mathProblems } from '../../src/db/schema';
 import { eq } from 'drizzle-orm';
-import { ResponseSchema, SchemaType } from '@google/generative-ai';
 
 @Injectable()
 export class MathProblemsService {
@@ -35,7 +34,7 @@ export class MathProblemsService {
 
   async extractProblemFromImage(image: Express.Multer.File) {
     const prompt =
-      'Extract the math problem from the image, try to use your vision as best as possible, and only try to extract the math problem, dont solve it. Also output it fully in latex format. Strictly only output the math problem, do not include anything else in your response.';
+      'Extract the math problem from the image, try to use your vision as best as possible, and only try to extract the math problem, dont solve it. Also output it into a format which can be directly used in a link for the wolfram alpha api math step by step. Strictly only output the math problem, do not include anything else in your response.';
 
     const { text } = await this.geminiService.visionGenerate(prompt, image);
     console.log(text);
@@ -52,8 +51,7 @@ export class MathProblemsService {
   async tryToSolveProblemFromImage(image: Express.Multer.File) {
     const action = await this.extractProblemFromImage(image);
 
-    const problem = encodeURIComponent(action);
-    const result = await this.wolframService.solveMathProblem(problem);
+    const result = await this.wolframService.solveMathProblem(action);
 
     if (result.length === 0) {
       return { action, result: await this.fallBackSolver(action) };

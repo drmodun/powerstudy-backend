@@ -1,17 +1,14 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { db } from '../../src/db/db';
 import { and, eq, ilike } from 'drizzle-orm';
 import { BaseActionReturn } from '../../src/base/baseActionReturn';
 import { NoValuesToSetException } from '../../src/base/exceptions/custom/noValuesToSetException';
 import { CreateKnowledgeBaseDto } from './dto/create-knowledge-base.dto';
-import { knowledgeBase } from '../../src/db/schema';
+import { knowledgeBase, users } from '../../src/db/schema';
 import { KnowledgeBaseResponse } from './entities/knowledge-base.entity';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto';
 import { KnowledgeBaseQuery } from './dto/query-knowledge-base.dto';
+import { KnowledgeBaseWithUser } from './entities/knowledge-base-with-user';
 
 @Injectable()
 export class KnowledgeBasesService {
@@ -45,6 +42,7 @@ export class KnowledgeBasesService {
         title: knowledgeBase.title,
         difficulty: knowledgeBase.difficulty,
         subject: knowledgeBase.subject,
+        userId: knowledgeBase.userId,
       })
       .from(knowledgeBase)
       .where(
@@ -66,6 +64,44 @@ export class KnowledgeBasesService {
       .execute()) satisfies KnowledgeBaseResponse[];
   }
 
+  async findAllWithUser(query: KnowledgeBaseQuery) {
+    return (await db
+      .select({
+        id: knowledgeBase.id,
+        levelOfDetail: knowledgeBase.levelOfDetail,
+        title: knowledgeBase.title,
+        language: knowledgeBase.language,
+        difficulty: knowledgeBase.difficulty,
+        subject: knowledgeBase.subject,
+        userId: knowledgeBase.userId,
+        user: {
+          id: users.id,
+          name: users.name,
+          profilePicture: users.profilePicture,
+          email: users.email,
+        },
+      })
+      .from(knowledgeBase)
+      .leftJoin(users, eq(knowledgeBase.userId, users.id))
+      .where(
+        and(
+          query?.title
+            ? ilike(knowledgeBase.title, `%${query.title}%`)
+            : undefined,
+          query?.difficulty
+            ? eq(knowledgeBase.difficulty, query.difficulty)
+            : undefined,
+          query?.subject ? eq(knowledgeBase.subject, query.subject) : undefined,
+          query?.levelOfDetail
+            ? eq(knowledgeBase.levelOfDetail, query.levelOfDetail)
+            : undefined,
+        ),
+      )
+      .offset(query?.page && query?.limit ? query.page * query.limit - 1 : 0)
+      .limit(query?.limit ? query.limit : 10)
+      .execute()) satisfies KnowledgeBaseWithUser[];
+  }
+
   async findOne(id: number) {
     const items = (await db
       .select({
@@ -75,10 +111,40 @@ export class KnowledgeBasesService {
         language: knowledgeBase.language,
         difficulty: knowledgeBase.difficulty,
         subject: knowledgeBase.subject,
+        userId: knowledgeBase.userId,
       })
       .from(knowledgeBase)
       .where(eq(knowledgeBase.id, id))
       .execute()) satisfies BaseActionReturn[];
+
+    if (items.length === 0) {
+      throw new NotFoundException('KnowledgeBase not found');
+    }
+
+    return items;
+  }
+
+  async findOneWithUser(id: number) {
+    const items = (await db
+      .select({
+        id: knowledgeBase.id,
+        levelOfDetail: knowledgeBase.levelOfDetail,
+        title: knowledgeBase.title,
+        language: knowledgeBase.language,
+        difficulty: knowledgeBase.difficulty,
+        subject: knowledgeBase.subject,
+        userId: knowledgeBase.userId,
+        user: {
+          id: users.id,
+          name: users.name,
+          profilePicture: users.profilePicture,
+          email: users.email,
+        },
+      })
+      .from(knowledgeBase)
+      .leftJoin(users, eq(knowledgeBase.userId, users.id))
+      .where(eq(knowledgeBase.id, id))
+      .execute()) satisfies KnowledgeBaseWithUser[];
 
     if (items.length === 0) {
       throw new NotFoundException('KnowledgeBase not found');

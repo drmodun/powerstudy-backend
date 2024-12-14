@@ -15,4 +15,7 @@ export class KnowledgeBaseResponse {
 
   @ApiResponseProperty()
   subject: string;
+
+  @ApiResponseProperty()
+  userId: number;
 }

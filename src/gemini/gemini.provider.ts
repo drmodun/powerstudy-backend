@@ -28,3 +28,5 @@ export const GeminiProModuleProvider: Provider<GenerativeModel> = {
     });
   },
 };
+
+//TODO: add gemini 2.0 flash model

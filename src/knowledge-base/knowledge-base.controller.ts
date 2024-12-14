@@ -24,6 +24,7 @@ import { KnowledgeBaseResponse } from './entities/knowledge-base.entity';
 import { UpdateKnowledgeBaseDto } from './dto/update-knowledge-base.dto';
 import { KnowledgeBaseOwnerGuard } from '../../src/auth/knowledge-base-guard';
 import { KnowledgeBaseQuery } from './dto/query-knowledge-base.dto';
+import { KnowledgeBaseWithUser } from './entities/knowledge-base-with-user';
 
 @ApiTags('knowledge-bases')
 @Controller('knowledge-bases')
@@ -50,6 +51,20 @@ export class KnowledgeBasesController {
   @ApiOkResponse({ type: [KnowledgeBaseResponse] })
   async findAll(@Query() query: KnowledgeBaseQuery) {
     return await this.knowledgeBaseService.findAll(query);
+  }
+
+  @Get('with-user')
+  @ApiOkResponse({ type: [KnowledgeBaseWithUser] })
+  async findAllWithUser(@Query() query: KnowledgeBaseQuery) {
+    return await this.knowledgeBaseService.findAllWithUser(query);
+  }
+
+  @Get('with-user/:baseId')
+  @ApiOkResponse({ type: KnowledgeBaseWithUser })
+  async findOneWithUser(@Param('baseId') id: string) {
+    const action = await this.knowledgeBaseService.findOneWithUser(+id);
+
+    return action[0];
   }
 
   @Patch(':baseId')
