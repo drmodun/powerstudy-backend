@@ -207,7 +207,7 @@ export class NotesService {
             : undefined,
         ),
       )
-      .offset(query?.page && query?.limit ? query.page * query.limit - 1 : 0)
+      .offset(query?.page && query?.limit ? (query.page - 1) * query.limit : 0)
       .limit(query?.limit ? query.limit : 10)
       .groupBy(notes.id)
       .execute()) satisfies NoteResponse[];

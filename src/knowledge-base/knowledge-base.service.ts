@@ -59,7 +59,7 @@ export class KnowledgeBasesService {
             : undefined,
         ),
       )
-      .offset(query?.page && query?.limit ? query.page * query.limit - 1 : 0)
+      .offset(query?.page && query?.limit ? (query.page - 1) * query.limit : 0)
       .limit(query?.limit ? query.limit : 10)
       .execute()) satisfies KnowledgeBaseResponse[];
   }
@@ -97,7 +97,7 @@ export class KnowledgeBasesService {
             : undefined,
         ),
       )
-      .offset(query?.page && query?.limit ? query.page * query.limit - 1 : 0)
+      .offset(query?.page && query?.limit ? (query.page - 1) * query.limit : 0)
       .limit(query?.limit ? query.limit : 10)
       .execute()) satisfies KnowledgeBaseWithUser[];
   }
