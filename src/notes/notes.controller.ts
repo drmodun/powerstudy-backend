@@ -10,17 +10,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import {
-  CreateNoteDto,
-  FullGenerateNotesDto,
-  GenerateNotesDto,
-} from './dto/create-note.dto';
+import { FullGenerateNotesDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
-  ApiBody,
-  ApiConsumes,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiTags,
@@ -39,7 +32,7 @@ export class NotesController {
   @UseGuards(JwtAuthGuard, KnowledgeBaseOwnerGuard)
   @ApiBearerAuth()
   @Post(':baseId')
-  @ApiCreatedResponse({ type: BaseActionReturn })
+  @ApiCreatedResponse({ type: [BaseActionReturn] })
   async generate(
     @Body() generateNotesDto: FullGenerateNotesDto,
     @Param('baseId') baseId: string,

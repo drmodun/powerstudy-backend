@@ -15,6 +15,9 @@ export class NoteResponse {
   @IsOptional()
   @IsNumber()
   amountOfBookmarks?: number;
+
+  @ApiResponseProperty()
+  knowledgeBaseId: number;
 }
 
 export class NoteResponseExtended extends NoteResponse {

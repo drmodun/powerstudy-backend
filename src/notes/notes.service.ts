@@ -195,6 +195,8 @@ export class NotesService {
         title: notes.title,
         amountOfBookmarks: count(bookmarks.id),
         content: notes.content,
+        knowledgeBaseId: notes.knowledgeBaseId,
+        userId: knowledgeBase.userId,
       })
       .from(notes)
       .leftJoin(bookmarks, eq(notes.id, bookmarks.itemId))
