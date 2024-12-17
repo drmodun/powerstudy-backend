@@ -1,6 +1,5 @@
 import {
   Content,
-  GenerationConfig,
   GenerativeModel,
   Part,
   ResponseSchema,
@@ -8,13 +7,6 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import { MODELS } from './gemini.config';
 import { GenAiResponse } from './dto/interfaces';
-import { Express } from 'express';
-import Multer from 'multer';
-import {
-  GoogleAIFileManager,
-  UploadFileResponse,
-} from '@google/generative-ai/dist/server/server';
-import { env } from 'process';
 import { FileInput } from '../../src/base/fileResults/fileResult.dto';
 
 @Injectable()
@@ -57,6 +49,7 @@ export class GeminiService {
     const { totalTokens } = await this.proModel.countTokens({ contents });
 
     const result = await this.proModel.generateContent({
+      // TODO: refactor this to use streaming later (generateContentStream)
       contents,
       ...(schema && {
         generationConfig: {

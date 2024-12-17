@@ -17,6 +17,9 @@ export class MathProblemsService {
     const { action: problem, result: solution } =
       await this.tryToSolveProblemFromImage(createMathProblemDto);
 
+    console.log('problem', problem);
+    console.log('solution', solution);
+
     return await this.saveToDatabase(problem, solution.toString(), userId);
   }
 
@@ -42,6 +45,7 @@ export class MathProblemsService {
   }
 
   async fallBackSolver(problem: string) {
+    console.log('falling back');
     const prompt = `Immediately mention that you are a fallback function and that the wolfram request has failed. Then try to solve the math problem, use your best knowledge and resources to solve it, and output the solution in markdown format. Try to solve it step by step. The problem is ${problem}`;
     const { text } = await this.geminiService.generateTextPro(prompt);
 
@@ -53,6 +57,8 @@ export class MathProblemsService {
 
     const result = await this.wolframService.solveMathProblem(action);
 
+    console.log('result', result);
+
     if (result.length === 0) {
       return { action, result: await this.fallBackSolver(action) };
     }
@@ -61,7 +67,7 @@ export class MathProblemsService {
     const { text: explanation } =
       await this.geminiService.generateText(explanationPrompt);
 
-    return { action, explanation };
+    return { action, result: explanation };
   }
 
   async findAll(userId?: number) {

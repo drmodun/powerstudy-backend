@@ -16,17 +16,10 @@ export class WolframService {
         throw new Error('No solution found');
 
       const pods = response.data.queryresult.pods;
-      const result = Array.from(pods).map((pod: any) => {
-        // Dont like using this but the wolfram lib doesnt have types
-        return {
-          title: pod.title || 'No title',
-          text: pod.plainText || 'No text',
-        };
-      });
 
       //TODO: decide wether save this to db or pass it o a llm first
 
-      return result;
+      return pods;
     } catch (error) {
       console.error(error);
       return [];
