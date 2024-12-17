@@ -32,6 +32,6 @@ export const SAFETY_SETTINGS: SafetySetting[] = [
 ];
 
 export const MODELS = {
-  PRO_MODEL: 'gemini-1.5-pro',
+  PRO_MODEL: 'gemini-2.0-flash-exp',
   FLASH_MODEL: 'gemini-1.5-flash',
 };

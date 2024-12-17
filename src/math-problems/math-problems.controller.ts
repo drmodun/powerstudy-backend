@@ -82,7 +82,9 @@ export class MathProblemsController {
   @Get(':id')
   @ApiOkResponse({ type: MathProblemResponse })
   async findOne(@Param('id') id: string) {
-    return await this.mathProblemsService.findOne(+id);
+    const [result] = await this.mathProblemsService.findOne(+id);
+
+    return result;
   }
 
   @Delete(':id')

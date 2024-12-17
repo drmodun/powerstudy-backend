@@ -160,6 +160,7 @@ export class QuestionAnswersService {
       this.getRecommendedQuestions(question),
       this.inferLanguage(question),
     ]);
+
     const response = await this.attemptCalls(inputs, language);
 
     if (!response) {

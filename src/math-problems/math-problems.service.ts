@@ -17,9 +17,6 @@ export class MathProblemsService {
     const { action: problem, result: solution } =
       await this.tryToSolveProblemFromImage(createMathProblemDto);
 
-    console.log('problem', problem);
-    console.log('solution', solution);
-
     return await this.saveToDatabase(problem, solution.toString(), userId);
   }
 

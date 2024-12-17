@@ -12,4 +12,7 @@ export class QuestionAnswerResponse {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty()
+  userId: number;
 }
